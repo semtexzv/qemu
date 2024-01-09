@@ -57,9 +57,9 @@ jobs:
           - platform: x86_64-linux-gnu
             runs_on: ubuntu-20.04
             # Used minimal build deps
-            container: ubuntu:20.04
+            container: ubuntu:18.04
             shell: bash -e {0}
-            run_prerequisites: "./.github/workflows/scripts/prerequisites-native.sh"
+            run_prerequisites: "./.github/workflows/scripts/prerequisites-old.sh"
             run_configure: "./.github/workflows/scripts/configure-native.sh"
 
           - platform: aarch64-linux-gnu
@@ -94,7 +94,7 @@ jobs:
         shell: ${{ matrix.shell }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Install prerequisites (${{ matrix.target }} @ ${{ matrix.platform }})
         if : ${{ matrix.platform != 'x86_64-w64-mingw32' }}
@@ -221,4 +221,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          draft: true
           files: upload/*

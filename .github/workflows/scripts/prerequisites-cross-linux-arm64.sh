@@ -24,8 +24,8 @@ cat /etc/apt/sources.list | grep -v "^#"
 echo DBG3 /etc/apt/apt-mirrors.txt
 test -f /etc/apt/apt-mirrors.txt && cat /etc/apt/apt-mirrors.txt | grep -v "^#"
 
-apt-get update -y -q \
-&& apt-get install -y -q --no-install-recommends \
+apt-get update -y -q
+apt-get install -y -q --no-install-recommends \
     binutils-aarch64-linux-gnu \
     build-essential \
     crossbuild-essential-arm64 \

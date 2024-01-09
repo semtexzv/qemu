@@ -4,8 +4,8 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND="noninteractive"
 
-apt-get update -y -q \
-&& apt-get install -y -q --no-install-recommends \
+apt-get update -y -q
+apt-get install -y -q --no-install-recommends \
     build-essential \
     git \
     libgcrypt-dev \
