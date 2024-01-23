@@ -35,6 +35,7 @@ typedef struct DWCSDMMCState {
     qemu_irq irq;
 
     uint32_t ctrl;
+    uint32_t clksrc;
     uint32_t cmd;
     uint32_t cmdarg;
     uint32_t resp[4];

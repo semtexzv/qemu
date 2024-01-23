@@ -417,6 +417,10 @@ static void dwc_sdmmc_write(void *opaque, hwaddr offset,
             dwc_sdmmc_update_irq(s);
             break;
 
+        case A_SDMMC_CLKSRC:
+            s->clksrc = value;
+            break;
+
         case A_SDMMC_CMD: {
             s->cmd = value;
             if (FIELD_EX32(value, SDMMC_CMD, START)) {
@@ -484,6 +488,8 @@ static uint64_t dwc_sdmmc_read(void *opaque, hwaddr offset,
     switch (offset) {
         case A_SDMMC_CTRL:
             return s->ctrl;
+        case A_SDMMC_CLKSRC:
+            return s->clksrc;
         case A_SDMMC_INTMASK:
             return s->intmask;
         case A_SDMMC_CMD:
