@@ -284,7 +284,7 @@ static void esp32_soc_realize(DeviceState *dev, Error **errp)
         MemoryRegion *drom = g_new(MemoryRegion, 1);
         MemoryRegion *irom = g_new(MemoryRegion, 1);
 
-        char name[16];
+        char name[18];
         snprintf(name, sizeof(name), "esp32.irom.cpu%d", i);
         memory_region_init_rom(irom, NULL, name,
                             memmap[ESP32_MEMREGION_IROM].size, &error_fatal);
