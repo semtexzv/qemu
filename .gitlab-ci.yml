@@ -22,21 +22,23 @@ generate_version:
 
     - cat version.env
 
-build-linux:
+.build_linux_template:
   stage: build
   image: $CI_DOCKER_REGISTRY/qemu-build:6
   tags:
     - build
     - amd64
+  variables:
+    # Don't use parallel:matrix here,
+    # becuase needs:project doesn't support it
+    # https://docs.gitlab.com/ee/ci/yaml/#needsproject
+    PLATFORM: x86_64-linux-gnu
+    TARGET: ""  # to be set in the job
   artifacts:
     paths:
       - dist/qemu-*.tar.xz
       - dist/archive_name_*
     expire_in: 1 week
-  parallel:
-    matrix:
-      - PLATFORM: [x86_64-linux-gnu]
-        TARGET: [riscv32-linux-user, xtensa-softmmu, riscv32-softmmu]
   script:
     - ./.github/workflows/scripts/configure-native.sh
     - ninja -C build install
@@ -48,6 +50,24 @@ build-linux:
     - export ARCHIVE_NAME=qemu-${TARGET}-${VERSION}-${PLATFORM}.tar.xz
     - tar cJvf ${DIST_DIR}/${ARCHIVE_NAME} qemu
     - echo $ARCHIVE_NAME >${DIST_DIR}/archive_name_${TARGET}_${PLATFORM}
+
+# these build jobs names are used in needs:project in idf/qemu-tests
+# don't rename it without updating the needs:project in idf/qemu-tests
+
+build_linux_xtensa_softmmu:
+  extends: .build_linux_template
+  variables:
+    TARGET: xtensa-softmmu
+
+build_linux_riscv32_softmmu:
+  extends: .build_linux_template
+  variables:
+    TARGET: riscv32-softmmu
+
+build_linux_riscv32_user:
+  extends: .build_linux_template
+  variables:
+    TARGET: riscv32-linux-user
 
 upload_to_http:
   image: espressif/scp
